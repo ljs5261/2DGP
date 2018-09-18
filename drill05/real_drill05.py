@@ -9,9 +9,17 @@ character = load_image('character.png')
 
 
 def move_from_point1_to_point2():
-    x, y = 203, 535
+    x1, y1 = 203, 535
     grass.draw_now(400, 30)
-    character.draw_now(x, y)
+    character.draw_now(x1, y1)
+
+    delay(5)
+
+    clear_canvas_now()
+    x2, y2 = 132, 243
+    grass.draw_now(400, 30)
+    character.draw_now(x2, y2)
+
     delay(5)
 
 
