@@ -1,5 +1,5 @@
 from pico2d import *
-
+import math
 open_canvas()
 
 grass = load_image('grass.png')
@@ -10,17 +10,17 @@ character = load_image('character.png')
 
 def move_from_point1_to_point2():
     x1, y1 = 203, 535
-    grass.draw_now(400, 30)
-    character.draw_now(x1, y1)
-
-    delay(5)
-
-    clear_canvas_now()
     x2, y2 = 132, 243
-    grass.draw_now(400, 30)
-    character.draw_now(x2, y2)
+    d_x = abs(x1 - x2) / 50  # x축 방향의 프레임사이의 거리
+    d_y = abs(y1 - y2) / 50  # y축 방향의 프레임사이의 거리
+    while x1 > x2:
+        clear_canvas_now()
+        grass.draw_now(400, 30)
+        character.draw_now(x1, y1)
 
-    delay(5)
+        x1 -= d_x
+        y1 -= d_y
+        delay(0.05)
 
 
 def move_from_point2_to_point3():
