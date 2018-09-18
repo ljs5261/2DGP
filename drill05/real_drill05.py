@@ -3,21 +3,23 @@ import math
 open_canvas()
 
 grass = load_image('grass.png')
-character = load_image('character.png')
+character = load_image('animation_sheet.png')
 
 # fill here
 
 
 def move_from_point1_to_point2():
+    frame = 0
     x1, y1 = 203, 535
     x2, y2 = 132, 243
     d_x = abs(x1 - x2) / 50  # x축 방향의 프레임사이의 거리
     d_y = abs(y1 - y2) / 50  # y축 방향의 프레임사이의 거리
     while x1 > x2:
-        clear_canvas_now()
-        grass.draw_now(400, 30)
-        character.draw_now(x1, y1)
-
+        clear_canvas()
+        grass.draw(400, 30)
+        character.clip_draw(frame * 100, 200, 100, 100, x1, y1)
+        update_canvas()
+        frame = (frame + 1) % 8
         x1 -= d_x
         y1 -= d_y
         delay(0.05)
