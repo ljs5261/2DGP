@@ -20,7 +20,7 @@ def move_from_point_to_next_point():
         d_x = abs(x1 - x2) / 50  # x축 방향의 프레임사이의 거리
         d_y = abs(y1 - y2) / 50  # y축 방향의 프레임사이의 거리
 
-        if x1 - x2 > 0:     # x1이 더 큰 경우
+        if x1 - x2 > 0:         # x1이 더 큰 경우
             while x1 > x2:
                 clear_canvas()
                 grass.draw(400, 30)
@@ -34,7 +34,7 @@ def move_from_point_to_next_point():
                     y1 += d_y
                 delay(0.05)
                 get_events()
-        else:               # x2가 더 큰 경우
+        else:                   # x2가 더 큰 경우
             while x1 < x2:
                 clear_canvas()
                 grass.draw(400, 30)
@@ -59,7 +59,7 @@ def move_from_point10_to_point1():
     d_x = abs(x1 - x2) / 50  # x축 방향의 프레임사이의 거리
     d_y = abs(y1 - y2) / 50  # y축 방향의 프레임사이의 거리
 
-    if x1 - x2 > 0:  # x1이 더 큰 경우
+    if x1 - x2 > 0:              # x1이 더 큰 경우
         while x1 > x2:
             clear_canvas()
             grass.draw(400, 30)
@@ -67,13 +67,13 @@ def move_from_point10_to_point1():
             update_canvas()
             frame = (frame + 1) % 8
             x1 -= d_x
-            if y1 - y2 > 0:  # y1이 y2보다 더 크면 y1 감소
+            if y1 - y2 > 0:    # y1이 y2보다 더 크면 y1 감소
                 y1 -= d_y
-            else:  # y1이 y2보다 더 작으면 y1 증가
+            else:              # y1이 y2보다 더 작으면 y1 증가
                 y1 += d_y
             delay(0.05)
             get_events()
-    else:  # x2가 더 큰 경우
+    else:                       # x2가 더 큰 경우
         while x1 < x2:
             clear_canvas()
             grass.draw(400, 30)
