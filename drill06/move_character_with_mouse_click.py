@@ -6,8 +6,8 @@ KPU_WIDTH, KPU_HEIGHT = 1280, 1024
 def handle_events():
     global running
     global x, y
-    events = get_events()  # 이벤트들을 다 가져옴
-    for event in events:  # 하나하나 빼서 검사
+    events = get_events()    #이벤트들을 다 가져옴
+    for event in events:     #하나하나 빼서 검사
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_MOUSEBUTTONDOWN:
@@ -22,9 +22,11 @@ open_canvas(KPU_WIDTH, KPU_HEIGHT)
 kpu_ground = load_image('KPU_GROUND.png')
 character = load_image('animation_sheet.png')
 
+
 running = True
 x, y = KPU_WIDTH // 2, KPU_HEIGHT // 2
 frame = 0
+
 
 while running:
     clear_canvas()
@@ -36,4 +38,5 @@ while running:
 
     delay(0.05)
 
+    
 close_canvas()
