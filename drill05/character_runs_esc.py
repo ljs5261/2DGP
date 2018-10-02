@@ -3,7 +3,7 @@ from pico2d import *
 open_canvas()
 
 grass = load_image('grass.png')
-character = load_image('animation_sheet.png')
+character = load_image('ataho1.png')
 
 
 def handle_events():
@@ -18,17 +18,20 @@ def handle_events():
 
 running = True
 x = 0
-frame = 0
+frame = 5
 y = 90
 while x < 800 and running:
+
     clear_canvas()
     grass.draw(400, 30)
-    character.clip_draw(frame * 100, 100, 100, 100, x, y)
+    character.clip_draw(frame * 38, 0, 38, 60, x, y)
     update_canvas()
     handle_events()
-    frame = (frame + 1) % 8
+    if frame >= 11:
+        frame = frame - 6
+    frame = (frame + 1) % 11
     x += 5
-    delay(0.05)
+    delay(0.5)
 
 
 
