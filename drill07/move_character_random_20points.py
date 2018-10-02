@@ -32,25 +32,17 @@ class Boy:
         self.image.clip_draw(self.frame * 100, 100 * ch_dir, 100, 100, self.x, self.y)
         self.frame = (self.frame + 1) % 8
 
-    def move(self):
-        global total_moving_count
-        self.x += 5
-        self.y += 5
-
-        pass
-
     def choose_ch_dir(self):
-        global ch_dir, mouse_x
+        global ch_dir
 
-        if mouse_x > self.x:  # 마우스 x 좌표가 캐릭터보다 오른쪽이면 캐릭터는 오른쪽을 바라본다.
+        if p2[0] > p1[0]:  # p2의 x 좌표가 p1의 x좌표보다 오른쪽이면 캐릭터는 오른쪽을 바라본다.
             ch_dir = 1
-        elif mouse_y < self.y:  # 마우스 y 좌표가 캐릭터보다 왼쪽이면 캐릭터는 왼쪽을 바라본다.
+        elif p2[0] < p1[0]:  # p2의 x 좌표가 p1의 x좌표보다 왼쪽이면 캐릭터는 왼쪽을 바라본다.
             ch_dir = 0
-        pass
 
     def move_line(self, p1, p2):
         global moving_count, t
-         # for i in range(0, 100 + 1, 2):
+
         t = moving_count / 100
         self.x = (1 - t) * p1[0] + t * p2[0]
         self.y = (1 - t) * p1[1] + t * p2[1]
@@ -68,7 +60,7 @@ while running:               # 캐릭터 위치 값 바꿔주기-> 방향 정하
 
     while moving_count < total_moving_count:
         b.move_line(p1, p2)
-
+        b.choose_ch_dir()
         clear_canvas()
 
         g.draw()
