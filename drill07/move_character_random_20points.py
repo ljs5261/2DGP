@@ -4,8 +4,10 @@ import random
 
 ch_dir = 0    # 캐릭터가 바라보는 방향을 결정하는 값, 0이면 왼쪽, 1이면 오른쪽
 moving_count = 0
-total_moving_count = 30
-
+total_moving_count = 100 + 1
+t = 0
+p1 =(400,300)
+p2 = (600,500 )
 
 class Grass:
 
@@ -21,12 +23,9 @@ class Grass:
 class Boy:
 
     def __init__(self):
-        self.x = random.randint(0, 200)
-        self.y = random.randint(90, 550)
-        self.frame = random.randint(0, 7)
-
-        self.speed = random.uniform(1.0, 3.0)
-
+        self.x = 0
+        self.y = 90
+        self.frame = 0
         self.image = load_image('animation_sheet.png')
 
     def draw(self):
@@ -34,9 +33,11 @@ class Boy:
         self.frame = (self.frame + 1) % 8
 
     def move(self):
-        global mouse_x, mouse_y, total_moving_count
-        self.x += (mouse_x - self.x) / total_moving_count
-        self.y += (mouse_y - self.y) / total_moving_count
+        global total_moving_count
+        self.x += 5
+        self.y += 5
+
+        pass
 
     def choose_ch_dir(self):
         global ch_dir, mouse_x
@@ -45,6 +46,14 @@ class Boy:
             ch_dir = 1
         elif mouse_y < self.y:  # 마우스 y 좌표가 캐릭터보다 왼쪽이면 캐릭터는 왼쪽을 바라본다.
             ch_dir = 0
+        pass
+
+    def move_line(self, p1, p2):
+        global moving_count, t
+         # for i in range(0, 100 + 1, 2):
+        t = moving_count / 100
+        self.x = (1 - t) * p1[0] + t * p2[0]
+        self.y = (1 - t) * p1[1] + t * p2[1]
 
 
 open_canvas()
@@ -58,7 +67,7 @@ running = True
 while running:               # 캐릭터 위치 값 바꿔주기-> 방향 정하기-> 그리기
 
     while moving_count < total_moving_count:
-        b.move()
+        b.move_line(p1, p2)
 
         clear_canvas()
 
@@ -67,7 +76,7 @@ while running:               # 캐릭터 위치 값 바꿔주기-> 방향 정하
         b.draw()
 
         update_canvas()
-        moving_count += 1
+        moving_count += 2
         delay(0.03)
 
     moving_count = 0
