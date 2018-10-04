@@ -7,12 +7,12 @@ ch_dir = 0    # 캐릭터가 바라보는 방향을 결정하는 값, 0이면 �
 moving_count = 0
 total_moving_count = 100 + 1
 t = 0
-size = 20
-points = [(random.randint(50,900), random.randint(50,600)) for i in range(size)]
+size = 4
+points = [(random.randint(50,900), random.randint(50,600)) for i in range(size)]   # 랜덤한 좌표 10개 생성
 n = 1
+draw_n_time = 1
 
-
-class KPU_GROUND:
+class Kpu_Ground:
 
     def __init__(self):
         self.image = load_image('KPU_GROUND.png')
@@ -36,26 +36,53 @@ class Boy:
         self.frame = (self.frame + 1) % 8
 
     def choose_ch_dir(self):
-        global ch_dir
+        global ch_dir, n
         tuple1 = points[n-1]
         tuple2 = points[n]
         if tuple2[0] > tuple1[0]:  # 다음포인트의 x 좌표가 이전포인트의 x 좌표보다 오른쪽이면 캐릭터는 오른쪽을 바라본다.
             ch_dir = 1
         elif tuple2[0] < tuple1[0]:  # 다음포인트의 x 좌표가 이전포인트의 x 좌표보다 왼쪽이면 캐릭터는 왼쪽을 바라본다.
             ch_dir = 0
-        pass
 
-    def move_line(self, p1, p2):
-        global moving_count, t
+    def move_curve(self, p1, p2, p3, p4):
+        global moving_count, t, cut_point_to_point
 
-        t = moving_count / 100
-        self.x = (1 - t) * p1[0] + t * p2[0]
-        self.y = (1 - t) * p1[1] + t * p2[1]
+        # draw p1-p2            # p4, p1, p2, p3 네 개 점의 100프로
+        if draw_n_time == 1:
+            t = moving_count / 100
+            self.x = ((-t ** 3 + 2 * t ** 2 - t) * p4[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p1[0] + (
+                        -3 * t ** 3 + 4 * t ** 2 + t) * p2[0] + (t ** 3 - t ** 2) * p3[0]) / 2
+            self.y = ((-t ** 3 + 2 * t ** 2 - t) * p4[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p1[1] + (
+                            -3 * t ** 3 + 4 * t ** 2 + t) * p2[1] + (t ** 3 - t ** 2) * p3[1]) / 2
+
+        # draw p2-p3             # p1, p2, p3, p4 네 개의 점의 100프로
+        elif draw_n_time == 2:
+            t = moving_count / 100
+            self.x = ((-t ** 3 + 2 * t ** 2 - t) * p1[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[0] + (
+                            -3 * t ** 3 + 4 * t ** 2 + t) * p3[0] + (t ** 3 - t ** 2) * p4[0]) / 2
+            self.y = ((-t ** 3 + 2 * t ** 2 - t) * p1[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p2[1] + (
+                            -3 * t ** 3 + 4 * t ** 2 + t) * p3[1] + (t ** 3 - t ** 2) * p4[1]) / 2
+
+        # draw p3-p4            # p2, p3, p4, p1 네 개의 점의 100프로
+        elif draw_n_time == 3:
+            t = moving_count/ 100
+            self.x = ((-t ** 3 + 2 * t ** 2 - t) * p2[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p3[0] + (
+                            -3 * t ** 3 + 4 * t ** 2 + t) * p4[0] + (t ** 3 - t ** 2) * p1[0]) / 2
+            self.y = ((-t ** 3 + 2 * t ** 2 - t) * p2[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p3[1] + (
+                            -3 * t ** 3 + 4 * t ** 2 + t) * p4[1] + (t ** 3 - t ** 2) * p1[1]) / 2
+
+        # draw p4-p1                 # p3, p4, p1, p2의 100프로
+        elif draw_n_time == 4:
+            t = moving_count / 100
+            self.x = ((-t ** 3 + 2 * t ** 2 - t) * p3[0] + (3 * t ** 3 - 5 * t ** 2 + 2) * p4[0] + (
+                            -3 * t ** 3 + 4 * t ** 2 + t) * p1[0] + (t ** 3 - t ** 2) * p2[0]) / 2
+            self.y = ((-t ** 3 + 2 * t ** 2 - t) * p3[1] + (3 * t ** 3 - 5 * t ** 2 + 2) * p4[1] + (
+                            -3 * t ** 3 + 4 * t ** 2 + t) * p1[1] + (t ** 3 - t ** 2) * p2[1]) / 2
 
 
 open_canvas(KPU_WIDTH, KPU_HEIGHT)
 
-g = KPU_GROUND()
+g = Kpu_Ground()
 
 b = Boy()
 
@@ -63,21 +90,23 @@ b = Boy()
 running = True
 
 while running:               # 캐릭터 위치 값 바꿔주기-> 방향 정하기-> 그리기
-
-    while moving_count < total_moving_count:
-        b.move_line(points[n-1], points[n])
         b.choose_ch_dir()
-        clear_canvas()
+        while moving_count < total_moving_count:
+            b.move_curve(points[0], points[1], points[2], points[3])
 
-        g.draw()
+            clear_canvas()
 
-        b.draw()
+            g.draw()
 
-        update_canvas()
-        moving_count += 2
+            b.draw()
 
-        delay(0.05)
+            update_canvas()
+            moving_count += 2
 
-    n = (n + 1) % size
-    moving_count = 0
+            delay(0.05)
 
+        n = (n + 1) % 4
+        draw_n_time += 1
+        moving_count = 0
+        if draw_n_time == 5:
+            draw_n_time = 1
