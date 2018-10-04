@@ -1,32 +1,33 @@
 from pico2d import *
 import random
 
+KPU_WIDTH, KPU_HEIGHT = 1000, 700
 
 ch_dir = 0    # 캐릭터가 바라보는 방향을 결정하는 값, 0이면 왼쪽, 1이면 오른쪽
 moving_count = 0
 total_moving_count = 100 + 1
 t = 0
 size = 20
-points = [(random.randint(50, 750), random.randint(50,550)) for i in range(size)]
+points = [(random.randint(50,900), random.randint(50,600)) for i in range(size)]
 n = 1
 
 
-class Grass:
+class KPU_GROUND:
 
     def __init__(self):
-        self.image = load_image('grass.png')
+        self.image = load_image('KPU_GROUND.png')
 
         print(self.image)
 
     def draw(self):
-        self.image.draw(400, 30)
+        self.image.draw(KPU_WIDTH//2, KPU_HEIGHT//2)
 
 
 class Boy:
 
     def __init__(self):
-        self.x = 0
-        self.y = 90
+        self.x = KPU_WIDTH//2
+        self.y = KPU_HEIGHT//2
         self.frame = 0
         self.image = load_image('animation_sheet.png')
 
@@ -52,9 +53,9 @@ class Boy:
         self.y = (1 - t) * p1[1] + t * p2[1]
 
 
-open_canvas()
+open_canvas(KPU_WIDTH, KPU_HEIGHT)
 
-g = Grass()
+g = KPU_GROUND()
 
 b = Boy()
 
