@@ -72,10 +72,13 @@ open_canvas()
 g = Grass()
 
 S_num = random.randint(0, 20)
+B_num = 20 - S_num
 S_B = []
+B_B = []
 for i in range(0, S_num):     # 작은 축구공 객체 생성
     S_B += [SmallBall()]
-
+for i in range(0, B_num):     # 큰 축구공 객체 생성
+    B_B += [BigBall()]
 boys = []
 
 for i in range(20):
@@ -88,6 +91,9 @@ while running:
     handle_events()
     for s_b in S_B:  # 작은 축구공 객체 하나씩 전부 y값을 감소 시켜줌
         s_b.drop_ball()
+    for b_b in B_B:  # 큰 축구공 객체 하나씩 전부 y값을 감소 시켜줌
+        b_b.drop_ball()
+
     for boy in boys:
         boy.update()
 
@@ -95,6 +101,9 @@ while running:
     g.draw()
     for s_b in S_B:  # 작은 축구공 객체 하나씩 전부 그려줌
         s_b.draw_ball()
+    for b_b in B_B:  # 큰 축구공 객체 하나씩 전부 그려줌
+        b_b.draw_ball()
+
     for boy in boys:
         boy.draw()
     update_canvas()
