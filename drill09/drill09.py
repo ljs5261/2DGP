@@ -41,6 +41,22 @@ class SmallBall:
             self.y -= self.speed
 
 
+class BigBall:
+    def __init__(self):             # 객체 생성시 이미지 받아오고 좌표값, 속도값 정해줌
+
+        self.image = load_image('ball41x41.png')
+        self.x = random.randint(20, 780)
+        self.y = 600
+        self.speed = random.uniform(2.0, 5.0)   # 2.0 , 5.0 사이의 임의의 실수 생성
+
+    def draw_ball(self):
+        self.image.draw(self.x, self.y)
+
+    def drop_ball(self):
+        if self.y >= 75:            # 축구공이 멈출 y 좌표값 지정
+            self.y -= self.speed
+
+
 def handle_events():
     global running
     events = get_events()
