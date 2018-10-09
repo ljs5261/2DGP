@@ -26,8 +26,8 @@ class Kpu_Ground:
 class Boy:
 
     def __init__(self):
-        self.x = KPU_WIDTH//2
-        self.y = KPU_HEIGHT//2
+        self.x = 0
+        self.y = 0
         self.frame = 0
         self.image = load_image('animation_sheet.png')
 
