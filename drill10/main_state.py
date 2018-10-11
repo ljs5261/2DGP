@@ -1,9 +1,9 @@
 import game_framework
 from pico2d import *
 from Boy import *
-from grass import *
+from Grass import *
 import base_pause_state
-
+import advanced_pause_state
 
 boy = None
 grass = None
@@ -36,7 +36,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:          # p키가 눌리면
-            game_framework.push_state(base_pause_state)                      # 타이틀화면으로 전환
+            game_framework.push_state(advanced_pause_state)               # pause 화면으로 전환
 
 
 def update():
