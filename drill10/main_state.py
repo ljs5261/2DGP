@@ -54,6 +54,16 @@ def draw():
     delay(0.04)
 
 
+def draw_boy_no_frame():
+    global boy, grass
+    clear_canvas()
+    grass.draw()
+    boy.draw_no_frame()
+
+    update_canvas()
+    delay(0.04)
+
+
 def pause():
     boy.pause()
 

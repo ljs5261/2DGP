@@ -14,7 +14,7 @@ def enter():
 
 def exit():
     global image
-    # del image
+    del image
 
 
 def update():
@@ -34,9 +34,10 @@ def handle_events():
 def draw():
     global image
     clear_canvas()
-    main_state.draw()
+    main_state.draw_boy_no_frame()
     image.draw(400, 300)
     update_canvas()
+    delay(0.05)
 
 
 def pause():

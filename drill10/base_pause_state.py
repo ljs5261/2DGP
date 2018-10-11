@@ -2,9 +2,8 @@ import game_framework
 from pico2d import *
 import main_state
 
-name = "LogoState"
+
 image = None
-logo_time = 0.0
 
 
 def enter():
@@ -14,7 +13,7 @@ def enter():
 
 def exit():
     global image
-    # del image
+    del image
 
 
 def update():

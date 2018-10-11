@@ -24,6 +24,9 @@ class Boy:
         self.image.clip_draw(self.frame * 100, 100 * ch_dir, 100, 100, self.x, self.y)
         self.frame = (self.frame + 1) % 8
 
+    def draw_no_frame(self):
+        self.image.clip_draw(self.frame * 100, 100 * ch_dir, 100, 100, self.x, self.y)
+
     def pause(self):
         global pause_x
         pause_x = self.x
