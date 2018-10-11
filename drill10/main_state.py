@@ -7,13 +7,21 @@ import base_pause_state
 
 boy = None
 grass = None
+first_start = 1
 
 
 def enter():
-    global boy, grass
-    open_canvas()
-    boy = Boy()
-    grass = Grass()
+    global boy, grass, first_start
+    if first_start == 1:
+        open_canvas()
+        boy = Boy()
+        grass = Grass()
+        first_start += 1
+    else:
+        open_canvas()
+        boy = Boy()
+        grass = Grass()
+        boy.start_pause_next()
 
 
 def exit():
@@ -47,4 +55,8 @@ def draw():
 
 
 def pause():
+    boy.pause()
+
+
+def resume():
     pass

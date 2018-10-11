@@ -50,9 +50,9 @@ def change_state(state):
 def push_state(state):
     global stack
     if (len(stack) > 0):
-        stack[-1].pause()
-    stack.append(state)
-    state.enter()
+        stack[-1].pause()    # pause함수로 push_state함수를 호출한 state가 저장됨
+    stack.append(state)       # 함수의 인자 state(다음state)가 stack리스트에 추가
+    state.enter()           # 인자 state의 enter함수 실행
 
 
 def pop_state():

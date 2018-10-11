@@ -18,15 +18,7 @@ def exit():
 
 
 def update():
-    global logo_time
-
-    if (logo_time > 1.0):
-        logo_time=0
-        # game_framework.quit()
-        # game_framework.change_state(title_state)
-        delay(0.01)
-
-    logo_time += 0.002
+    pass
 
 
 def handle_events():
@@ -36,7 +28,7 @@ def handle_events():
             game_framework.quit()
 
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:         # p키가 눌리면
-            game_framework.push_state(main_state)                 # 타이틀화면으로 전환
+            game_framework.change_state(main_state)                 # 타이틀화면으로 전환
 
 
 def draw():
@@ -45,3 +37,6 @@ def draw():
     image.draw(400,300)
     update_canvas()
 
+
+def pause():
+    pass
