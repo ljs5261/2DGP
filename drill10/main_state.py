@@ -18,7 +18,7 @@ def enter():
         grass = Grass()
         first_start += 1
     else:
-        open_canvas()
+
         boy = Boy()
         grass = Grass()
         boy.start_pause_next()
