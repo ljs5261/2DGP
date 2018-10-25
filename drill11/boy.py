@@ -9,7 +9,8 @@ key_event_table = {
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
     (SDL_KEYDOWN, SDLK_RSHIFT) : RIGHT_SHIFT_DOWN,
-    (SDL_KEYDOWN, SDLK_LSHIFT) : LEFT_SHIFT_DOWN
+    (SDL_KEYDOWN, SDLK_LSHIFT) : LEFT_SHIFT_DOWN,
+
 }
 
 # Boy States
@@ -17,21 +18,34 @@ key_event_table = {
 
 class DashState:
     def enter(boy, event):
-        boy.frame = 0
+        if boy.dir == 1:
+            if event == RIGHT_SHIFT_DOWN:
+                boy.dash_speed += 5
+            elif event == LEFT_SHIFT_DOWN:
+                boy.dash_speed += 5
+        else:
+            if event == RIGHT_SHIFT_DOWN:
+                boy.dash_speed -= 5
+            elif event == LEFT_SHIFT_DOWN:
+                boy.dash_speed -= 5
+        boy.timer = 20
 
     def exit(selfboy, event):
         pass
 
     def do(boy):
         boy.frame = (boy.frame + 1) % 8
+        boy.x += boy.dash_speed
+        boy.x = clamp(25, boy.x, 800 - 25)
+        boy.timer -= 1
+        if boy.timer == 0:
+            boy.add_event(DASH_TIMER)
 
     def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_composite_draw(boy.frame * 100, 300, 100, 100,
-            3.141592 / 2, '', boy.x - 25, boy.y - 25, 100, 100)
+        if boy.velocity == 1:
+            boy.image.clip_draw(boy.frame * 100, 100, 100, 100, boy.x, boy.y)
         else:
-            boy.image.clip_composite_draw(boy.frame * 100, 200, 100, 100,
-            -3.141592 / 2, '', boy.x + 25, boy.y - 25, 100, 100)
+            boy.image.clip_draw(boy.frame * 100, 0, 100, 100, boy.x, boy.y)
 
 
 class SleepState:
@@ -115,7 +129,6 @@ next_state_table = {
     SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN:RunState,
                  LEFT_UP: RunState, RIGHT_UP: RunState},
     DashState: {DASH_TIMER: RunState}
-
 }
 
 
@@ -128,16 +141,10 @@ class Boy:
         self.velocity = 0
         self.frame = 0
         self.timer = 0
+        self.dash_speed = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
-
-    def update_state(self):
-        if len(self.event_que) > 0:
-            event = self.event_que.pop()
-            self.cur_state.exit(self, event)        # 가장 오래된 이벤트에 의해 현재 상태를 나가고
-            self.cur_state = next_state_table[self.cur_state][event]      # 그 이벤트에 의해 다음 상태로 변화
-            self.cur_state.enter(self, event)           # 다음 상태로 들어간다
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -146,9 +153,9 @@ class Boy:
         self.cur_state.do(self)
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            self.cur_state.exit(self, event)
-            self.cur_state = next_state_table[self.cur_state][event]
-            self.cur_state.enter(self, event)
+            self.cur_state.exit(self, event)         # 가장 오래된 이벤트에 의해 현재 상태를 나가고
+            self.cur_state = next_state_table[self.cur_state][event]  # 그 이벤트에 의해 다음 상태로 변화
+            self.cur_state.enter(self, event)       # 다음 상태로 들어간다
 
     def draw(self):
         self.cur_state.draw(self)
