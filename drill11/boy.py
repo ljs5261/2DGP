@@ -18,19 +18,17 @@ key_event_table = {
 
 class DashState:
     def enter(boy, event):
-        if boy.dir == 1:
-            if event == RIGHT_SHIFT_DOWN:
+        if boy.velocity == 1:
+            if event == RIGHT_SHIFT_DOWN or event == LEFT_SHIFT_DOWN:
                 boy.dash_speed += 5
-            elif event == LEFT_SHIFT_DOWN:
-                boy.dash_speed += 5
-        else:
-            if event == RIGHT_SHIFT_DOWN:
-                boy.dash_speed -= 5
-            elif event == LEFT_SHIFT_DOWN:
-                boy.dash_speed -= 5
-        boy.timer = 20
 
-    def exit(selfboy, event):
+        elif boy.velocity == -1:
+            if event == RIGHT_SHIFT_DOWN or event == LEFT_SHIFT_DOWN:
+                boy.dash_speed -= 5
+
+        boy.timer = 10
+
+    def exit(boy, event):
         pass
 
     def do(boy):
@@ -52,7 +50,7 @@ class SleepState:
     def enter(boy, event):
         boy.frame = 0
 
-    def exit(selfboy, event):
+    def exit(boy, event):
         pass
 
     def do(boy):
@@ -70,13 +68,13 @@ class SleepState:
 class IdleState:
     def enter(boy, event):
         if event == RIGHT_DOWN:
-            boy.velocity += 1
+            boy.velocity = 1
         elif event == LEFT_DOWN:
-            boy.velocity -= 1
+            boy.velocity = -1
         elif event == RIGHT_UP:
-            boy.velocity -= 1
+            boy.velocity = -1
         elif event == LEFT_UP:
-            boy.velocity += 1
+            boy.velocity = 1
         boy.timer = 1000
 
     def exit(boy, event):
@@ -97,10 +95,14 @@ class IdleState:
 
 class RunState:
     def enter(boy, event):
-        if event == RIGHT_DOWN: boy.velocity += 1
-        elif event == LEFT_DOWN: boy.velocity -= 1
-        elif event == RIGHT_UP: boy.velocity -= 1
-        elif event == LEFT_UP: boy.velocity += 1
+        if event == RIGHT_DOWN: boy.velocity = 1
+        elif event == LEFT_DOWN: boy.velocity = -1
+        elif event == RIGHT_UP: boy.velocity = 1
+        elif event == LEFT_UP: boy.velocity = -1
+        elif event == RIGHT_SHIFT_DOWN:
+            pass
+        elif event == LEFT_SHIFT_DOWN:
+            pass
         boy.dir = boy.velocity
 
     def exit(boy, event):
@@ -128,7 +130,8 @@ next_state_table = {
                 RIGHT_SHIFT_DOWN: DashState, LEFT_SHIFT_DOWN: DashState},
     SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN:RunState,
                  LEFT_UP: RunState, RIGHT_UP: RunState},
-    DashState: {DASH_TIMER: RunState}
+    DashState: {DASH_TIMER: RunState, RIGHT_SHIFT_DOWN: RunState,
+                LEFT_SHIFT_DOWN: RunState}
 }
 
 
