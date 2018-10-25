@@ -1,16 +1,37 @@
 from pico2d import *
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER = range(5)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, RIGHT_SHIFT_DOWN, LEFT_SHIFT_DOWN, SLEEP_TIMER, DASH_TIMER = range(8)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
-    (SDL_KEYUP, SDLK_LEFT): LEFT_UP
+    (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
+    (SDL_KEYDOWN, SDLK_RSHIFT) : RIGHT_SHIFT_DOWN,
+    (SDL_KEYDOWN, SDLK_LSHIFT) : LEFT_SHIFT_DOWN
 }
 
 # Boy States
+
+
+class DashState:
+    def enter(boy, event):
+        boy.frame = 0
+
+    def exit(selfboy, event):
+        pass
+
+    def do(boy):
+        boy.frame = (boy.frame + 1) % 8
+
+    def draw(boy):
+        if boy.dir == 1:
+            boy.image.clip_composite_draw(boy.frame * 100, 300, 100, 100,
+            3.141592 / 2, '', boy.x - 25, boy.y - 25, 100, 100)
+        else:
+            boy.image.clip_composite_draw(boy.frame * 100, 200, 100, 100,
+            -3.141592 / 2, '', boy.x + 25, boy.y - 25, 100, 100)
 
 
 class SleepState:
@@ -78,8 +99,10 @@ class RunState:
         boy.x = clamp(25, boy.x, 800 - 25)
 
     def draw(boy):
-        if boy.velocity == 1: boy.image.clip_draw(boy.frame * 100, 100, 100, 100, boy.x, boy.y)
-        else: boy.image.clip_draw(boy.frame * 100, 0, 100, 100, boy.x, boy.y)
+        if boy.velocity == 1:
+            boy.image.clip_draw(boy.frame * 100, 100, 100, 100, boy.x, boy.y)
+        else:
+            boy.image.clip_draw(boy.frame * 100, 0, 100, 100, boy.x, boy.y)
 
 
 next_state_table = {
@@ -87,9 +110,12 @@ next_state_table = {
                RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
                SLEEP_TIMER: SleepState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState,
-               LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState},
+               LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
+                RIGHT_SHIFT_DOWN: DashState, LEFT_SHIFT_DOWN: DashState},
     SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN:RunState,
-                 LEFT_UP: RunState, RIGHT_UP: RunState}
+                 LEFT_UP: RunState, RIGHT_UP: RunState},
+    DashState: {DASH_TIMER: RunState}
+
 }
 
 
@@ -109,9 +135,9 @@ class Boy:
     def update_state(self):
         if len(self.event_que) > 0:
             event = self.event_que.pop()
-            self.cur_state.exit(self, event)
-            self.cur_state = next_state_table[self.cur_state][event]
-            self.cur_state.enter(self, event)
+            self.cur_state.exit(self, event)        # 가장 오래된 이벤트에 의해 현재 상태를 나가고
+            self.cur_state = next_state_table[self.cur_state][event]      # 그 이벤트에 의해 다음 상태로 변화
+            self.cur_state.enter(self, event)           # 다음 상태로 들어간다
 
     def add_event(self, event):
         self.event_que.insert(0, event)

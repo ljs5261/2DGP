@@ -61,7 +61,7 @@ def draw():
     grass.draw()
     boy.draw()
     update_canvas()
-    delay(0.01)
+
 
 
 
