@@ -1,4 +1,4 @@
-import game_framework
+from game_framework import *
 from pico2d import *
 import main_state
 

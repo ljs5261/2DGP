@@ -36,7 +36,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:          # p키가 눌리면
-            game_framework.push_state(advanced_pause_state)               # pause 화면으로 전환
+            game_framework.push_state(base_pause_state)               # pause 화면으로 전환
 
 
 def update():

@@ -10,8 +10,6 @@ class Boy:
         self.x, self.y = 0, 90
         self.frame = 0
         self.image = load_image('animation_sheet.png')
-        self.state = 2
-        self.hp = 100
 
     def update(self):
         if self.x < 800:
@@ -30,6 +28,3 @@ class Boy:
     def pause(self):
         global pause_x
         pause_x = self.x
-
-    def handle_event(self):
-        pass
