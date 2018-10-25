@@ -1,15 +1,15 @@
 from pico2d import *
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, RIGHT_SHIFT_DOWN, LEFT_SHIFT_DOWN, SLEEP_TIMER, DASH_TIMER = range(8)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SHIFT_DOWN, SLEEP_TIMER, DASH_TIMER = range(7)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
     (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
-    (SDL_KEYDOWN, SDLK_RSHIFT) : RIGHT_SHIFT_DOWN,
-    (SDL_KEYDOWN, SDLK_LSHIFT) : LEFT_SHIFT_DOWN,
+    (SDL_KEYDOWN, SDLK_RSHIFT) : SHIFT_DOWN,
+    (SDL_KEYDOWN, SDLK_LSHIFT) : SHIFT_DOWN
 
 }
 
@@ -18,12 +18,10 @@ key_event_table = {
 
 class DashState:
     def enter(boy, event):
-        if boy.velocity == 1:
-            if event == RIGHT_SHIFT_DOWN or event == LEFT_SHIFT_DOWN:
+        if event == SHIFT_DOWN:
+            if boy.velocity == 1:
                 boy.dash_speed += 5
-
-        elif boy.velocity == -1:
-            if event == RIGHT_SHIFT_DOWN or event == LEFT_SHIFT_DOWN:
+            elif boy.velocity == -1:
                 boy.dash_speed -= 5
 
         boy.timer = 10
@@ -99,10 +97,6 @@ class RunState:
         elif event == LEFT_DOWN: boy.velocity = -1
         elif event == RIGHT_UP: boy.velocity = 1
         elif event == LEFT_UP: boy.velocity = -1
-        elif event == RIGHT_SHIFT_DOWN:
-            pass
-        elif event == LEFT_SHIFT_DOWN:
-            pass
         boy.dir = boy.velocity
 
     def exit(boy, event):
@@ -127,11 +121,11 @@ next_state_table = {
                SLEEP_TIMER: SleepState},
     RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState,
                LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState,
-                RIGHT_SHIFT_DOWN: DashState, LEFT_SHIFT_DOWN: DashState},
+                SHIFT_DOWN: DashState},
     SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN:RunState,
                  LEFT_UP: RunState, RIGHT_UP: RunState},
-    DashState: {DASH_TIMER: RunState, RIGHT_SHIFT_DOWN: RunState,
-                LEFT_SHIFT_DOWN: RunState}
+    DashState: {DASH_TIMER: RunState, SHIFT_DOWN: DashState
+                }
 }
 
 
