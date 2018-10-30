@@ -1,4 +1,6 @@
 from pico2d import *
+import math
+import game_framework
 
 PIXEL_PER_METER = (10.0/ 0.3)
 RUN_SPEED_KMPH = 20.0 # 마라토너속도
@@ -6,7 +8,27 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-SLEEP_TIMER, ACTIVE_TIMER = range(2)
+SLEEP_TIMER, ACTIVE_TIMER, CIRCLE_TIMER = range(3)
+
+
+class CircleState:
+
+    @staticmethod
+    def enter(ghost, event, b):
+        pass
+
+    @staticmethod
+    def exit(ghost, event):
+        pass
+
+    @staticmethod
+    def do(ghost, b):
+        ghost.x += 1
+
+
+    @staticmethod
+    def draw(ghost):
+        ghost.image.clip_draw(0, 300, 100, 100, ghost.x, ghost.y)
 
 
 class ActiveState:
@@ -21,8 +43,10 @@ class ActiveState:
 
     @staticmethod
     def do(ghost, b):
-        if ghost.y <= 200:
+        if ghost.y <= 190:  # boy의 y값이 90이므로 100pixel만큼 이동, 100pixel = 3M
             ghost.y += 1
+        if ghost.y == 190:
+            ghost.add_event(CIRCLE_TIMER)
 
     @staticmethod
     def draw(ghost):
@@ -53,7 +77,9 @@ class SleepState:
 
 next_state_table = {
     SleepState: {ACTIVE_TIMER: ActiveState},
-    ActiveState: {SLEEP_TIMER: SleepState}
+    ActiveState: {SLEEP_TIMER: SleepState, CIRCLE_TIMER: CircleState
+                  }
+
 }
 
 
