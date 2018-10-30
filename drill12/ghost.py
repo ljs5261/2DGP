@@ -1,8 +1,10 @@
-import game_framework
 from pico2d import *
 
-from boy import IdleState
-import game_world
+PIXEL_PER_METER = (10.0/ 0.3)
+RUN_SPEED_KMPH = 20.0 # 마라토너속도
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 SLEEP_TIMER, ACTIVE_TIMER = range(2)
 
