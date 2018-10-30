@@ -1,6 +1,7 @@
 from pico2d import *
 import math
 import game_framework
+import random
 
 PIXEL_PER_METER = (10.0/ 0.3)
 RUN_SPEED_KMPH = 20.0 # 마라토너속도
@@ -34,6 +35,7 @@ class CircleState:
     @staticmethod
     def draw(ghost):
         ghost.image.clip_draw(0, 300, 100, 100, ghost.x, ghost.y)
+        ghost.image.opacify(random.random())
 
 
 class ActiveState:
@@ -56,6 +58,7 @@ class ActiveState:
     @staticmethod
     def draw(ghost):
         ghost.image.clip_draw(0, 300, 100, 100, ghost.x, ghost.y)
+        ghost.image.opacify(random.random())
 
 
 class SleepState:
@@ -100,6 +103,7 @@ class Ghost:
         self.cur_state.enter(self, None, b)
         self.prev_time = 0
         self.curr_time = 0
+        self.image.opacify(random.random())
 
     def add_event(self, event):
         self.event_que.insert(0, event)
