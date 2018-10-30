@@ -10,6 +10,9 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 SLEEP_TIMER, ACTIVE_TIMER, CIRCLE_TIMER = range(3)
 
+theta = math.pi / 2
+r = 100
+
 
 class CircleState:
 
@@ -23,8 +26,10 @@ class CircleState:
 
     @staticmethod
     def do(ghost, b):
-        ghost.x += 1
-
+        global theta, r
+        ghost.x = b.x + (r * math.cos(theta))
+        ghost.y = b.y + (r * math.sin(theta))
+        theta += 4 * math.pi * game_framework.frame_time
 
     @staticmethod
     def draw(ghost):
