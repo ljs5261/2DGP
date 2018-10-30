@@ -1,29 +1,28 @@
-import random
-import json
-import os
 
-from pico2d import *
-import game_framework
-import game_world
-
-from boy import Boy
+from boy import *
 from grass import Grass
-
+from ghost import Ghost
 
 name = "MainState"
 
 boy = None
+grass = None
+ghost = None
+
 
 def enter():
-    global boy
+    global boy, grass, ghost
     boy = Boy()
     grass = Grass()
+    ghost = Ghost(boy)
     game_world.add_object(grass, 0)
     game_world.add_object(boy, 1)
+    game_world.add_object(ghost, 1)
 
 
 def exit():
     game_world.clear()
+
 
 def pause():
     pass
@@ -45,15 +44,18 @@ def handle_events():
 
 
 def update():
-    for game_object in game_world.all_objects():
-        game_object.update()
-    # fill here
+    global boy, ghost
+    boy.update()
+    ghost.update(boy)
 
 
 def draw():
+    global boy, grass, ghost
     clear_canvas()
-    for game_object in game_world.all_objects():
-        game_object.draw()
+    grass.draw()
+    boy.draw()
+    ghost.draw()
+
     update_canvas()
 
 

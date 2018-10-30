@@ -61,7 +61,6 @@ class IdleState:
         if boy.curr_time - boy.prev_time >= 10.0:
             boy.add_event(SLEEP_TIMER)
 
-
     @staticmethod
     def draw(boy):
         if boy.dir == 1:
@@ -151,7 +150,6 @@ class Boy:
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.dir*3)
         game_world.add_object(ball, 1)
-
 
     def add_event(self, event):
         self.event_que.insert(0, event)
