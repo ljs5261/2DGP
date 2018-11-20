@@ -23,8 +23,8 @@ class FixedBackground:
 
     # 내가 가져올 영역을 제한 (0, width)
     def update(self):
-        self.window_left = clamp(0, int(self.center_object.x) - self.canvas_width//2, self.w - self.canvas_width)
-        self.window_bottom = clamp(0, int(self.center_object.y) - self.canvas_height // 2, self.h - self.canvas_height)
+        self.window_left = clamp(0, int(self.center_object.x) - self.canvas_width//2, self.w - self.canvas_width)  # 내가 가져올 영역의 왼쪽 끝 x좌표값
+        self.window_bottom = clamp(0, int(self.center_object.y) - self.canvas_height // 2, self.h - self.canvas_height)  # 내가 가져올 영역의 아래쪽 끝 y 좌표값
 
     def handle_event(self, event):
             pass
