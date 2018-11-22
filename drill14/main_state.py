@@ -8,12 +8,13 @@ import game_world
 
 from boy import Boy
 from background import FixedBackground as Background
-
+from ball import FixedBall
 
 name = "MainState"
 
 boy = None
 background = None
+balls = []
 
 
 def enter():
@@ -25,8 +26,15 @@ def enter():
     background = Background()
     game_world.add_object(background, 0)
 
+    global balls
+    balls = [FixedBall() for i in range(100)]
+    game_world.add_objects(balls, 1)
+
     background.set_center_object(boy)  # 백그라운드에 boy를 알려줌
     boy.set_background(background)  # boy에 백그라운드를 알려줌
+
+    for ball in balls:
+        ball.set_background(background)
 
 
 def exit():
