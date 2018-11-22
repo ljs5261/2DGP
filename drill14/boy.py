@@ -116,15 +116,20 @@ class Boy:
         self.event_que = []
         self.cur_state = WalkingState
         self.cur_state.enter(self, None)
+        self.eat_ball_count = 0
+        self.eat_sound = load_wav('pickup.wav')
+        self.eat_sound.set_volume(32)
 
     def get_bb(self):
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
-
 
     def set_background(self, bg):
         self.bg = bg
         self.x = self.bg.w / 2
         self.y = self.bg.h / 2
+
+    def eat(self, ball):
+        self.eat_sound.play()
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -139,7 +144,9 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
-        self.font.draw(self.canvas_width//2 - 60, self.canvas_height//2 + 50, '(%5d, %5d)' % (self.x, self.y), (255, 255, 0))
+
+        self.font.draw(self.canvas_width // 2 - 60, self.canvas_height // 2 + 50, '(%2d)' % (self.eat_ball_count),
+                       (255, 255, 0))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
